@@ -139,3 +139,6 @@ dmypy.json
 .prof
 
 .idea/
+
+# 공인인증서 비밀번호 파일
+password.txt

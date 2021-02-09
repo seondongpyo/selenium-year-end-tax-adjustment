@@ -41,6 +41,23 @@ try:
     input_password.send_keys(certificate_password)  # 공인인증서 비밀번호 입력
     driver.find_element_by_id('btn_confirm_iframe').click()  # 확인 버튼 클릭
 
+    # 공동인증서 로그인 이후 '연말정산간소화 자료 조회'에서 '조회' 버튼 클릭
+    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
+    search_button = wait.until(ec.presence_of_element_located((By.ID, 'textbox10400')))
+    search_button.click()
+
+    # 유의사항 안내 모달 닫기
+    wait.until(ec.visibility_of_element_located((By.ID, 'uteyscaa80popup')))
+    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'uteyscaa80popup_iframe')))
+    close_button = wait.until(ec.visibility_of_element_located((By.ID, 'trigger2')))
+    close_button.click()
+
+    # 소득 및 세액공제 자료 조회
+    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
+    link_elements = wait.until(ec.visibility_of_all_elements_located((By.CSS_SELECTOR, '#ddcCulsUl li a')))
+    for link_element in link_elements:
+        link_element.click()
+
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()
 

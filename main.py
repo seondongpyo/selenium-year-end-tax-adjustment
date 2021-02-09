@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import *
 
 from util.selenium_process_manager import kill_selenium_chrome_driver
 
@@ -57,6 +58,19 @@ try:
     link_elements = wait.until(ec.visibility_of_all_elements_located((By.CSS_SELECTOR, '#ddcCulsUl li a')))
     for link_element in link_elements:
         link_element.click()
+
+    # '공제신고서 작성' 버튼 클릭
+    driver.find_element_by_id('btnYrsSrvc01_TODO').click()
+    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'ysCmShowMultiElecDcmDwld_iframe')))
+    write_new_button = wait.until(ec.element_to_be_clickable((By.ID, 'btnYrsSrvc01')))
+    write_new_button.click()
+
+    # 이미 작성된 공제신고서가 있는 경우, 알림 창이 나타남
+    try:
+        wait.until(ec.alert_is_present())
+        driver.switch_to.alert.accept()
+    except TimeoutException:
+        print('No alert is present')
 
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()

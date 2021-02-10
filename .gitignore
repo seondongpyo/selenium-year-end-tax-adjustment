@@ -141,4 +141,4 @@ dmypy.json
 .idea/
 
 # 공인인증서 비밀번호 파일
-password.txt
+private_data.txt

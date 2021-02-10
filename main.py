@@ -38,7 +38,7 @@ try:
     wait.until(ec.visibility_of_element_located((By.ID, 'ML_window')))  # 공인인증서 창이 나타날 때까지 대기
     wait.until(ec.invisibility_of_element((By.XPATH, '/html/body/div[13]')))  # 로딩 이미지가 사라질 때까지 대기
     input_password = wait.until(ec.element_to_be_clickable((By.ID, 'input_cert_pw')))
-    certificate_password = open('password.txt', 'r').readline()
+    certificate_password = open('private_data.txt', 'r').readline()
     input_password.send_keys(certificate_password)  # 공인인증서 비밀번호 입력
     driver.find_element_by_id('btn_confirm_iframe').click()  # 확인 버튼 클릭
 
@@ -62,6 +62,8 @@ try:
     # '공제신고서 작성' 버튼 클릭
     driver.find_element_by_id('btnYrsSrvc01_TODO').click()
     wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'ysCmShowMultiElecDcmDwld_iframe')))
+    wait.until(ec.presence_of_element_located((By.ID, '___processbar2_i')))
+    wait.until(ec.invisibility_of_element((By.ID, '___processbar2_i')))
     write_new_button = wait.until(ec.element_to_be_clickable((By.ID, 'btnYrsSrvc01')))
     write_new_button.click()
 
@@ -71,6 +73,29 @@ try:
         driver.switch_to.alert.accept()
     except TimeoutException:
         print('No alert is present')
+
+    # 공제신고서 수정하기 버튼 클릭
+    wait.until(ec.title_is('국세청 홈택스 - 연말정산간소화 > 근로자 > 소득ㆍ세액공제 자료 조회/발급'))
+    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
+    edit_deduction_form_button = wait.until(ec.element_to_be_clickable((By.ID, 'trigger32')))
+    edit_deduction_form_button.click()
+
+    # Step.01 기본사항 입력 탭 클릭
+    input_basic_data_tab = wait.until(ec.element_to_be_clickable((By.ID, 'tabControl1_tab_tabs2')))
+    input_basic_data_tab.click()
+    wait.until(ec.number_of_windows_to_be(2))
+
+    # 근무처조회/입력 팝업 창으로 이동
+    current_windows = driver.window_handles
+    for current_window in current_windows:
+        driver.switch_to.window(current_window)
+        if '근무처조회/입력' == driver.title:
+            break
+
+    # 근무처 사업자번호 입력
+    input_corporate_number = wait.until(ec.visibility_of_element_located((By.ID, 'gridNowWa_cell_0_1_text')))
+    input_corporate_number.send_keys('1234567890')
+    driver.find_element_by_xpath('//*[@id="gridNowWa_cell_0_2"]/button').click()
 
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()

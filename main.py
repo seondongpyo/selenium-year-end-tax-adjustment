@@ -13,6 +13,7 @@ try:
 
     certificate_password = lines[0].replace('\n', '')
     corporate_registration_number = lines[1].replace('\n', '')
+    total_income = lines[2].replace('\n', '')
 
     driver = webdriver.Chrome(ChromeDriverManager().install())  # 셀레늄 드라이버 초기화
     wait = WebDriverWait(driver, 5)  # 명시적 대기를 위한 WebDriverWait 생성
@@ -99,8 +100,16 @@ try:
 
     # 근무처 사업자번호 입력
     input_corporate_number = wait.until(ec.visibility_of_element_located((By.ID, 'gridNowWa_cell_0_1_text')))
-    input_corporate_number.send_keys('1234567890')
+    input_corporate_number.send_keys(corporate_registration_number)
     driver.find_element_by_xpath('//*[@id="gridNowWa_cell_0_2"]/button').click()
+
+    # 총급여 입력
+    driver.find_element_by_id('gridNowWa_cell_0_4_text').send_keys(total_income)
+
+    # 반영하기 버튼 클릭
+    driver.find_element_by_id('trigger17').click()
+    wait.until(ec.alert_is_present())
+    driver.switch_to.alert.accept()
 
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()

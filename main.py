@@ -8,6 +8,12 @@ from selenium.common.exceptions import *
 from util.selenium_process_manager import kill_selenium_chrome_driver
 
 try:
+    with open('private_data.txt', 'r') as file:
+        lines = file.readlines()
+
+    certificate_password = lines[0].replace('\n', '')
+    corporate_registration_number = lines[1].replace('\n', '')
+
     driver = webdriver.Chrome(ChromeDriverManager().install())  # 셀레늄 드라이버 초기화
     wait = WebDriverWait(driver, 5)  # 명시적 대기를 위한 WebDriverWait 생성
 
@@ -38,7 +44,6 @@ try:
     wait.until(ec.visibility_of_element_located((By.ID, 'ML_window')))  # 공인인증서 창이 나타날 때까지 대기
     wait.until(ec.invisibility_of_element((By.XPATH, '/html/body/div[13]')))  # 로딩 이미지가 사라질 때까지 대기
     input_password = wait.until(ec.element_to_be_clickable((By.ID, 'input_cert_pw')))
-    certificate_password = open('private_data.txt', 'r').readline()
     input_password.send_keys(certificate_password)  # 공인인증서 비밀번호 입력
     driver.find_element_by_id('btn_confirm_iframe').click()  # 확인 버튼 클릭
 

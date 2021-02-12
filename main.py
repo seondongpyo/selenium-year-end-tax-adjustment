@@ -111,6 +111,25 @@ try:
     wait.until(ec.alert_is_present())
     driver.switch_to.alert.accept()
 
+    # 저장 후 다음이동 버튼 클릭
+    wait.until(ec.number_of_windows_to_be(1))
+    current_windows = driver.window_handles
+    for current_window in current_windows:
+        driver.switch_to.window(current_window)
+        if '국세청 홈택스 - 연말정산간소화 > 근로자 > 소득ㆍ세액공제 자료 조회/발급' == driver.title:
+            break
+
+    driver.switch_to.frame('txppIframe')
+    driver.find_element_by_id('trigger25').click()
+    wait.until(ec.alert_is_present())
+    driver.switch_to.alert.accept()
+
+    # '부양가족 입력'에서 저장 후 다음이동 버튼 클릭
+    wait.until(ec.visibility_of_element_located((By.ID, 'textbox1034')))
+    driver.find_element_by_id('btnSaveNext').click()
+    wait.until(ec.alert_is_present())
+    driver.switch_to.alert.accept()
+
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()
 

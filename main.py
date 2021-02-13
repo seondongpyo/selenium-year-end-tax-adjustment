@@ -130,6 +130,16 @@ try:
     wait.until(ec.alert_is_present())
     driver.switch_to.alert.accept()
 
+    # '공제항목별 지출명세 작성'에서 다음이동 버튼 클릭
+    wait.until(ec.visibility_of_element_located((By.ID, 'textbox1033')))
+    driver.find_element_by_id('textbox1367').click()
+    wait.until(ec.alert_is_present())
+    driver.switch_to.alert.accept()
+
+    # '공제신고서 내용 확인'에서 공제신고서 PDF다운로드 버튼 클릭
+    wait.until(ec.visibility_of_element_located((By.ID, 'trigger41')))
+    driver.find_element_by_id('trigger41').click()
+
     # chromedriver.exe 종료
     kill_selenium_chrome_driver()
 

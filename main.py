@@ -6,6 +6,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import *
 
 from util.selenium_process_manager import kill_selenium_chrome_driver
+from pages.HometaxMainPage import HometaxMainPage
 
 try:
     with open('private_data.txt', 'r') as file:
@@ -23,9 +24,10 @@ try:
     driver.get(hometax_url)
 
     # 연말정산간소화 페이지로 이동
-    navigate_to_simplified_page = wait.until(ec.presence_of_element_located((By.ID, 'menuAtag_0112100000')))
-    driver.execute_script('arguments[0].click()', navigate_to_simplified_page)
-    wait.until(ec.title_is('국세청 홈택스 - 연말정산간소화'))
+    main_page = HometaxMainPage(driver)
+    simplified_page = main_page.navigate_to_simplified_page()
+    simplified_page.navigate_to_login_by_certificate_page()
+    simplified_page.wait_until_loading_image_disappear()
 
     # 공동인증서 로그인 클릭
     wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))

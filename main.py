@@ -29,26 +29,12 @@ try:
     simplified_page.navigate_to_login_by_certificate_page()
     simplified_page.wait_until_loading_image_disappear()
 
-    # 공동인증서 로그인 클릭
-    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
-    login_button = wait.until(ec.element_to_be_clickable((By.ID, 'textbox103999')))
-    login_button.click()
-    
-    # 로딩 대기
-    wait.until(ec.presence_of_element_located((By.ID, '___processbar2_i')))
-    wait.until(ec.invisibility_of_element((By.ID, '___processbar2_i')))
-    
-    # 공동인증서 로그인 버튼 클릭
-    login_by_certificate_button = wait.until(ec.element_to_be_clickable((By.ID, 'group91882124')))
-    login_by_certificate_button.click()
+    # 공동인증서 로그인 버튼 클릭 클릭
+    simplified_page.click_login_by_certificate_button()
 
     # 공동인증서가 하나일 경우...
-    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'dscert')))
-    wait.until(ec.visibility_of_element_located((By.ID, 'ML_window')))  # 공인인증서 창이 나타날 때까지 대기
-    wait.until(ec.invisibility_of_element((By.XPATH, '/html/body/div[13]')))  # 로딩 이미지가 사라질 때까지 대기
-    input_password = wait.until(ec.element_to_be_clickable((By.ID, 'input_cert_pw')))
-    input_password.send_keys(certificate_password)  # 공인인증서 비밀번호 입력
-    driver.find_element_by_id('btn_confirm_iframe').click()  # 확인 버튼 클릭
+    simplified_page.input_certificate_password(certificate_password)
+    simplified_page.click_confirm_button()
 
     # 공동인증서 로그인 이후 '연말정산간소화 자료 조회'에서 '조회' 버튼 클릭
     wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))

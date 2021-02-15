@@ -2,6 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
+from pages.HometaxInquireDataPage import HometaxInquireDataPage
+
 
 class HometaxYearEndTaxAdjustmentPage:
     WINDOW_TITLE = '국세청 홈택스 - 연말정산간소화'
@@ -43,6 +45,7 @@ class HometaxYearEndTaxAdjustmentPage:
         self.wait.until(ec.frame_to_be_available_and_switch_to_it(self.FRAME))
         inquiry_button = self.wait.until(ec.presence_of_element_located(self.BUTTON_INQUIRE_DATA))
         inquiry_button.click()
+        return HometaxInquireDataPage(self.driver)
 
     def wait_until_loading_image_disappear(self):
         self.wait.until(ec.presence_of_element_located(self.LOADING_IMAGE))

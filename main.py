@@ -29,17 +29,12 @@ try:
     simplified_page.navigate_to_login_by_certificate_page()
     simplified_page.wait_until_loading_image_disappear()
 
-    # 공동인증서 로그인 버튼 클릭 클릭
-    simplified_page.click_login_by_certificate_button()
-
-    # 공동인증서가 하나일 경우...
-    simplified_page.input_certificate_password(certificate_password)
-    simplified_page.click_confirm_button()
+    simplified_page.click_login_by_certificate_button()  # 공동인증서 로그인 버튼 클릭 클릭
+    simplified_page.input_certificate_password(certificate_password)  # 공동인증서 비밀번호 입력
+    simplified_page.click_confirm_button()  # 확인 버튼 클릭
 
     # 공동인증서 로그인 이후 '연말정산간소화 자료 조회'에서 '조회' 버튼 클릭
-    wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
-    search_button = wait.until(ec.presence_of_element_located((By.ID, 'textbox10400')))
-    search_button.click()
+    simplified_page.click_inquire_data_button()
 
     # 유의사항 안내 모달 닫기
     wait.until(ec.visibility_of_element_located((By.ID, 'uteyscaa80popup')))

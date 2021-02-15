@@ -14,6 +14,7 @@ class HometaxYearEndTaxAdjustmentPage:
     LOADING_CERTIFICATE = (By.XPATH, '/html/body/div[13]')
     INPUT_CERTIFICATE_PASSWORD = (By.ID, 'input_cert_pw')
     BUTTON_CONFIRM = (By.ID, 'btn_confirm_iframe')
+    BUTTON_INQUIRE_DATA = (By.ID, 'textbox10400')
 
     def __init__(self, driver):
         self.driver = driver
@@ -37,6 +38,11 @@ class HometaxYearEndTaxAdjustmentPage:
 
     def click_confirm_button(self):
         self.driver.find_element(*self.BUTTON_CONFIRM).click()  # 확인 버튼 클릭
+
+    def click_inquire_data_button(self):
+        self.wait.until(ec.frame_to_be_available_and_switch_to_it(self.FRAME))
+        inquiry_button = self.wait.until(ec.presence_of_element_located(self.BUTTON_INQUIRE_DATA))
+        inquiry_button.click()
 
     def wait_until_loading_image_disappear(self):
         self.wait.until(ec.presence_of_element_located(self.LOADING_IMAGE))

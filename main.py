@@ -37,27 +37,8 @@ inquire_data_page = simplified_page.click_inquire_data_button()
 
 inquire_data_page.close_notice_modal()  # 유의사항 안내 모달 닫기
 inquire_data_page.inquire_data_by_month()  # 소득 및 세액공제 자료 조회
-
-# '공제신고서 작성' 버튼 클릭
-driver.find_element_by_id('btnYrsSrvc01_TODO').click()
-wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'ysCmShowMultiElecDcmDwld_iframe')))
-wait.until(ec.presence_of_element_located((By.ID, '___processbar2_i')))
-wait.until(ec.invisibility_of_element((By.ID, '___processbar2_i')))
-write_new_button = wait.until(ec.element_to_be_clickable((By.ID, 'btnYrsSrvc01')))
-write_new_button.click()
-
-# 이미 작성된 공제신고서가 있는 경우, 알림 창이 나타남
-try:
-    wait.until(ec.alert_is_present())
-    driver.switch_to.alert.accept()
-except TimeoutException:
-    print('No alert is present')
-
-# 공제신고서 수정하기 버튼 클릭
-wait.until(ec.title_is('국세청 홈택스 - 연말정산간소화 > 근로자 > 소득ㆍ세액공제 자료 조회/발급'))
-wait.until(ec.frame_to_be_available_and_switch_to_it((By.ID, 'txppIframe')))
-edit_deduction_form_button = wait.until(ec.element_to_be_clickable((By.ID, 'trigger32')))
-edit_deduction_form_button.click()
+inquire_data_page.click_write_new_deduction_form_button()  # '공제신고서 작성' 버튼 클릭
+inquire_data_page.click_edit_deduction_form_button()  # 공제신고서 수정하기 버튼 클릭
 
 # Step.01 기본사항 입력 탭 클릭
 input_basic_data_tab = wait.until(ec.element_to_be_clickable((By.ID, 'tabControl1_tab_tabs2')))

@@ -3,6 +3,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helper.WindowHelper import WindowHelper
+from pages.popup.HometaxInputOfficePage import HometaxInputOfficePage
+
 
 class HometaxInquireDataPage:
     WINDOW_TITLE = '국세청 홈택스 - 연말정산간소화 > 근로자 > 소득ㆍ세액공제 자료 조회/발급'
@@ -17,6 +20,7 @@ class HometaxInquireDataPage:
     MODAL_WRITE_NEW_DEDUCTION_FORM = (By.ID, 'ysCmShowMultiElecDcmDwld_iframe')
     LOADING_IMAGE = (By.ID, '___processbar2_i')
     BUTTON_EDIT_DEDUCTION_FORM = (By.ID, 'trigger32')
+    STEP_1_TAB = (By.ID, 'tabControl1_tab_tabs2')
 
     def __init__(self, driver):
         self.driver = driver
@@ -60,3 +64,10 @@ class HometaxInquireDataPage:
         edit_deduction_form_button = self.wait.until(ec.element_to_be_clickable(self.BUTTON_EDIT_DEDUCTION_FORM))
         edit_deduction_form_button.click()
 
+    def click_step_1_tab(self):
+        # Step.01 기본사항 입력 탭 클릭
+        input_basic_data_tab = self.wait.until(ec.element_to_be_clickable(self.STEP_1_TAB))
+        input_basic_data_tab.click()
+        self.wait.until(ec.number_of_windows_to_be(2))
+        WindowHelper(self.driver).switch_to_window_by_title(HometaxInputOfficePage.WINDOW_TITLE)
+        return HometaxInputOfficePage(self.driver)

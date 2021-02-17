@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.common.exceptions import *
 
+from helper.WindowHelper import WindowHelper
 from util.selenium_process_manager import kill_selenium_chrome_driver
 from pages.HometaxMainPage import HometaxMainPage
 
@@ -34,36 +35,16 @@ simplified_page.click_confirm_button()  # 확인 버튼 클릭
 
 # 공동인증서 로그인 이후 '연말정산간소화 자료 조회'에서 '조회' 버튼 클릭
 inquire_data_page = simplified_page.click_inquire_data_button()
-
 inquire_data_page.close_notice_modal()  # 유의사항 안내 모달 닫기
 inquire_data_page.inquire_data_by_month()  # 소득 및 세액공제 자료 조회
 inquire_data_page.click_write_new_deduction_form_button()  # '공제신고서 작성' 버튼 클릭
 inquire_data_page.click_edit_deduction_form_button()  # 공제신고서 수정하기 버튼 클릭
 
-# Step.01 기본사항 입력 탭 클릭
-input_basic_data_tab = wait.until(ec.element_to_be_clickable((By.ID, 'tabControl1_tab_tabs2')))
-input_basic_data_tab.click()
-wait.until(ec.number_of_windows_to_be(2))
-
-# 근무처조회/입력 팝업 창으로 이동
-current_windows = driver.window_handles
-for current_window in current_windows:
-    driver.switch_to.window(current_window)
-    if '근무처조회/입력' == driver.title:
-        break
-
-# 근무처 사업자번호 입력
-input_corporate_number = wait.until(ec.visibility_of_element_located((By.ID, 'gridNowWa_cell_0_1_text')))
-input_corporate_number.send_keys(corporate_registration_number)
-driver.find_element_by_xpath('//*[@id="gridNowWa_cell_0_2"]/button').click()
-
-# 총급여 입력
-driver.find_element_by_id('gridNowWa_cell_0_4_text').send_keys(total_income)
-
-# 반영하기 버튼 클릭
-driver.find_element_by_id('trigger17').click()
-wait.until(ec.alert_is_present())
-driver.switch_to.alert.accept()
+input_office_page = inquire_data_page.click_step_1_tab()
+input_office_page.input_corporate_number(corporate_registration_number)  # 근무처 사업자번호 입력
+input_office_page.click_confirm_button()
+input_office_page.input_total_income(total_income)  # 총급여 입력
+input_office_page.click_apply_button()  # 반영하기 버튼 클릭
 
 # 저장 후 다음이동 버튼 클릭
 wait.until(ec.number_of_windows_to_be(1))

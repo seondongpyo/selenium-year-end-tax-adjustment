@@ -21,6 +21,12 @@ class HometaxInquireDataPage:
     LOADING_IMAGE = (By.ID, '___processbar2_i')
     BUTTON_EDIT_DEDUCTION_FORM = (By.ID, 'trigger32')
     STEP_1_TAB = (By.ID, 'tabControl1_tab_tabs2')
+    BUTTON_SAVE_AND_MOVE_TO_STEP_2 = (By.ID, 'trigger25')
+    STEP_2_NOTICE = (By.ID, 'textbox3176')
+    BUTTON_SAVE_AND_MOVE_TO_STEP_3 = (By.ID, 'btnSaveNext')
+    STEP_3_NOTICE = (By.ID, 'textbox1033')
+    BUTTON_MOVE_TO_STEP_4 = (By.ID, 'textbox1367')
+    BUTTON_DOWNLOAD_WRITTEN_DEDUCTION_FORM = (By.ID, 'trigger41')
 
     def __init__(self, driver):
         self.driver = driver
@@ -65,9 +71,30 @@ class HometaxInquireDataPage:
         edit_deduction_form_button.click()
 
     def click_step_1_tab(self):
-        # Step.01 기본사항 입력 탭 클릭
         input_basic_data_tab = self.wait.until(ec.element_to_be_clickable(self.STEP_1_TAB))
         input_basic_data_tab.click()
         self.wait.until(ec.number_of_windows_to_be(2))
         WindowHelper(self.driver).switch_to_window_by_title(HometaxInputOfficePage.WINDOW_TITLE)
         return HometaxInputOfficePage(self.driver)
+
+    def click_save_and_move_to_step_2_button(self):
+        self.driver.switch_to.frame(self.FRAME[1])
+        self.driver.find_element(*self.BUTTON_SAVE_AND_MOVE_TO_STEP_2).click()
+        self.wait.until(ec.alert_is_present())
+        self.driver.switch_to.alert.accept()
+
+    def click_save_and_move_to_step_3_button(self):
+        self.wait.until(ec.visibility_of_element_located(self.STEP_2_NOTICE))
+        self.driver.find_element(*self.BUTTON_SAVE_AND_MOVE_TO_STEP_3).click()
+        self.wait.until(ec.alert_is_present())
+        self.driver.switch_to.alert.accept()
+
+    def click_move_to_step_4_button(self):
+        self.wait.until(ec.visibility_of_element_located(self.STEP_3_NOTICE))
+        self.driver.find_element(*self.BUTTON_MOVE_TO_STEP_4).click()
+        self.wait.until(ec.alert_is_present())
+        self.driver.switch_to.alert.accept()
+
+    def click_download_written_deduction_form_button(self):
+        self.wait.until(ec.visibility_of_element_located(self.BUTTON_DOWNLOAD_WRITTEN_DEDUCTION_FORM))
+        self.driver.find_element(*self.BUTTON_DOWNLOAD_WRITTEN_DEDUCTION_FORM).click()

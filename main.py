@@ -1,13 +1,9 @@
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.common.exceptions import *
 
-from helper.WindowHelper import WindowHelper
-from util.selenium_process_manager import kill_selenium_chrome_driver
 from pages.HometaxMainPage import HometaxMainPage
+from util.selenium_process_manager import kill_selenium_chrome_driver
 
 with open('private_data.txt', 'r') as file:
     lines = file.readlines()
@@ -44,36 +40,11 @@ input_office_page = inquire_data_page.click_step_1_tab()
 input_office_page.input_corporate_number(corporate_registration_number)  # 근무처 사업자번호 입력
 input_office_page.click_confirm_button()
 input_office_page.input_total_income(total_income)  # 총급여 입력
-input_office_page.click_apply_button()  # 반영하기 버튼 클릭
-
-# 저장 후 다음이동 버튼 클릭
-wait.until(ec.number_of_windows_to_be(1))
-current_windows = driver.window_handles
-for current_window in current_windows:
-    driver.switch_to.window(current_window)
-    if '국세청 홈택스 - 연말정산간소화 > 근로자 > 소득ㆍ세액공제 자료 조회/발급' == driver.title:
-        break
-
-driver.switch_to.frame('txppIframe')
-driver.find_element_by_id('trigger25').click()
-wait.until(ec.alert_is_present())
-driver.switch_to.alert.accept()
-
-# '부양가족 입력'에서 저장 후 다음이동 버튼 클릭
-wait.until(ec.visibility_of_element_located((By.ID, 'textbox1034')))
-driver.find_element_by_id('btnSaveNext').click()
-wait.until(ec.alert_is_present())
-driver.switch_to.alert.accept()
-
-# '공제항목별 지출명세 작성'에서 다음이동 버튼 클릭
-wait.until(ec.visibility_of_element_located((By.ID, 'textbox1033')))
-driver.find_element_by_id('textbox1367').click()
-wait.until(ec.alert_is_present())
-driver.switch_to.alert.accept()
-
-# '공제신고서 내용 확인'에서 공제신고서 PDF다운로드 버튼 클릭
-wait.until(ec.visibility_of_element_located((By.ID, 'trigger41')))
-driver.find_element_by_id('trigger41').click()
+inquire_data_page = input_office_page.click_apply_button()  # 반영하기 버튼 클릭
+inquire_data_page.click_save_and_move_to_step_2_button()  # 저장 후 다음이동 버튼 클릭
+inquire_data_page.click_save_and_move_to_step_3_button()  # '부양가족 입력'에서 저장 후 다음이동 버튼 클릭
+inquire_data_page.click_move_to_step_4_button()  # '공제항목별 지출명세 작성'에서 다음이동 버튼 클릭
+inquire_data_page.click_download_written_deduction_form_button()  # '공제신고서 내용 확인'에서 공제신고서 PDF다운로드 버튼 클릭
 
 # chromedriver.exe 종료
 kill_selenium_chrome_driver()

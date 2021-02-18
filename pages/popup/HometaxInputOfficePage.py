@@ -2,6 +2,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helper.WindowHelper import WindowHelper
+from pages import HometaxInquireDataPage
+
 
 class HometaxInputOfficePage:
     WINDOW_TITLE = '근무처조회/입력'
@@ -25,7 +28,9 @@ class HometaxInputOfficePage:
         self.driver.find_element(*self.INPUT_TOTAL_INCOME).send_keys(total_income)
 
     def click_apply_button(self):
-        # 반영하기 버튼 클릭
         self.driver.find_element(*self.APPLY_BUTTON).click()
         self.wait.until(ec.alert_is_present())
         self.driver.switch_to.alert.accept()
+        self.wait.until(ec.number_of_windows_to_be(1))
+        WindowHelper(self.driver).switch_to_window_by_title(HometaxInquireDataPage.HometaxInquireDataPage.WINDOW_TITLE)
+        return HometaxInquireDataPage.HometaxInquireDataPage(self.driver)

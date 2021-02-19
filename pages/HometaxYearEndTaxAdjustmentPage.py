@@ -34,6 +34,17 @@ class HometaxYearEndTaxAdjustmentPage:
         self.wait.until(ec.visibility_of_element_located(self.MODAL_CERTIFICATE))  # 공인인증서 창이 나타날 때까지 대기
         self.wait.until(ec.invisibility_of_element(self.LOADING_CERTIFICATE))  # 로딩 이미지가 사라질 때까지 대기
 
+    def select_certificate_by_owner_name(self, certificate_owner_name):
+        certificate_is_found = False
+        certificate_list = self.driver.find_elements_by_css_selector('#tabledataTable > tbody tr > td > a > span')
+        for certificate in certificate_list:
+            if certificate.text.startswith(certificate_owner_name):
+                certificate_is_found = True
+                break
+
+        if not certificate_is_found:
+            self.driver.execute_script('alert("해당 공인인증서를 찾을 수 없습니다 : [' + certificate_owner_name + ']")')
+
     def input_certificate_password(self, certificate_password):
         input_password = self.wait.until(ec.element_to_be_clickable(self.INPUT_CERTIFICATE_PASSWORD))
         input_password.send_keys(certificate_password)  # 공인인증서 비밀번호 입력

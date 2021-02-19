@@ -5,12 +5,13 @@ from webdriver_manager.chrome import ChromeDriverManager
 from pages.HometaxMainPage import HometaxMainPage
 from util.selenium_process_manager import kill_selenium_chrome_driver
 
-with open('private_data.txt', 'r') as file:
+with open('private_data.txt', 'r', encoding='UTF8') as file:
     lines = file.readlines()
 
-certificate_password = lines[0].replace('\n', '')
-corporate_registration_number = lines[1].replace('\n', '')
-total_income = lines[2].replace('\n', '')
+certificate_owner_name = lines[0].replace('\n', '')
+certificate_password = lines[1].replace('\n', '')
+corporate_registration_number = lines[2].replace('\n', '')
+total_income = lines[3].replace('\n', '')
 
 driver = webdriver.Chrome(ChromeDriverManager().install())  # 셀레늄 드라이버 초기화
 wait = WebDriverWait(driver, 5)  # 명시적 대기를 위한 WebDriverWait 생성
@@ -26,6 +27,7 @@ simplified_page.navigate_to_login_by_certificate_page()
 simplified_page.wait_until_loading_image_disappear()
 
 simplified_page.click_login_by_certificate_button()  # 공동인증서 로그인 버튼 클릭 클릭
+simplified_page.select_certificate_by_owner_name(certificate_owner_name)  # 이름으로 시작하는 공동인증서 찾기
 simplified_page.input_certificate_password(certificate_password)  # 공동인증서 비밀번호 입력
 simplified_page.click_confirm_button()  # 확인 버튼 클릭
 

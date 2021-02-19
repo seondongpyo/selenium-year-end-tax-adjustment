@@ -15,5 +15,5 @@ class HometaxMainPage:
     def navigate_to_simplified_page(self):
         button = self.wait.until(ec.presence_of_element_located(self.BUTTON_NAVIGATE_TO_SIMPLIFIED_PAGE))
         self.driver.execute_script('arguments[0].click()', button)
-        self.wait.until(ec.title_is('국세청 홈택스 - 연말정산간소화'))
+        self.wait.until(ec.title_is(HometaxYearEndTaxAdjustmentPage.WINDOW_TITLE))
         return HometaxYearEndTaxAdjustmentPage(self.driver)

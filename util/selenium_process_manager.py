@@ -6,7 +6,8 @@ def kill_selenium_chrome_driver():
         process_name = process.name()
         process_id = process.pid
 
-        if process_name == "chromedriver.exe":
+        if process_name == "chromedriver.exe" or process_name == "geckodriver.exe"\
+                or process.name == "msedgedriver.exe":
             psutil.Process(pid=process_id).kill()
 
             # 부모 프로세스까지 종료하려면 주석 해제

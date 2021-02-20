@@ -1,5 +1,9 @@
+import os
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from webdriver_manager.microsoft import EdgeChromiumDriverManager
 
 from pages.HometaxMainPage import HometaxMainPage
 from util.selenium_process_manager import kill_selenium_chrome_driver
@@ -7,12 +11,20 @@ from util.selenium_process_manager import kill_selenium_chrome_driver
 with open('private_data.txt', 'r', encoding='UTF8') as file:
     lines = file.readlines()
 
-certificate_owner_name = lines[0].replace('\n', '')
-certificate_password = lines[1].replace('\n', '')
-corporate_registration_number = lines[2].replace('\n', '')
-total_income = lines[3].replace('\n', '')
+browser_name = lines[0].replace('\n', '')
+certificate_owner_name = lines[1].replace('\n', '')
+certificate_password = lines[2].replace('\n', '')
+corporate_registration_number = lines[3].replace('\n', '')
+total_income = lines[4].replace('\n', '')
 
-driver = webdriver.Chrome(ChromeDriverManager().install())  # 셀레늄 드라이버 초기화
+driver = None
+print('browser_name :', browser_name)
+if browser_name == 'chrome':
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+elif browser_name == 'edge':
+    driver = webdriver.Edge(EdgeChromiumDriverManager().install())
+elif browser_name == 'firefox':
+    driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
 
 # 홈택스 메인 페이지로 이동
 hometax_url = 'https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml'

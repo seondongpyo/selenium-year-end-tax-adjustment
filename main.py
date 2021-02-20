@@ -1,5 +1,3 @@
-import os
-
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
@@ -20,11 +18,11 @@ total_income = lines[4].replace('\n', '')
 driver = None
 print('browser_name :', browser_name)
 if browser_name == 'chrome':
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
 elif browser_name == 'edge':
-    driver = webdriver.Edge(EdgeChromiumDriverManager().install())
+    driver = webdriver.Edge(executable_path=EdgeChromiumDriverManager().install())
 elif browser_name == 'firefox':
-    driver = webdriver.Firefox(executable_path=r'geckodriver.exe')
+    driver = webdriver.Firefox(executable_path=GeckoDriverManager().install())
 
 # 홈택스 메인 페이지로 이동
 hometax_url = 'https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml'

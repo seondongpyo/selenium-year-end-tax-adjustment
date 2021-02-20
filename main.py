@@ -1,9 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 from pages.HometaxMainPage import HometaxMainPage
-from util.selenium_process_manager import kill_selenium_chrome_driver
+from util.selenium_process_manager import kill_selenium_driver
 
 with open('private_data.txt', 'r', encoding='UTF8') as file:
     lines = file.readlines()
@@ -14,7 +13,6 @@ corporate_registration_number = lines[2].replace('\n', '')
 total_income = lines[3].replace('\n', '')
 
 driver = webdriver.Chrome(ChromeDriverManager().install())  # 셀레늄 드라이버 초기화
-wait = WebDriverWait(driver, 5)  # 명시적 대기를 위한 WebDriverWait 생성
 
 # 홈택스 메인 페이지로 이동
 hometax_url = 'https://hometax.go.kr/websquare/websquare.html?w2xPath=/ui/pp/index.xml'
@@ -49,4 +47,4 @@ inquire_data_page.click_move_to_step_4_button()  # '공제항목별 지출명세
 inquire_data_page.click_download_written_deduction_form_button()  # '공제신고서 내용 확인'에서 공제신고서 PDF다운로드 버튼 클릭
 
 # chromedriver.exe 종료
-kill_selenium_chrome_driver()
+kill_selenium_driver()

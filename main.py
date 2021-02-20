@@ -2,7 +2,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
 from pages.HometaxMainPage import HometaxMainPage
-from util.selenium_process_manager import kill_selenium_driver
+from util.selenium_process_manager import kill_selenium_chrome_driver
 
 with open('private_data.txt', 'r', encoding='UTF8') as file:
     lines = file.readlines()
@@ -47,4 +47,4 @@ inquire_data_page.click_move_to_step_4_button()  # '공제항목별 지출명세
 inquire_data_page.click_download_written_deduction_form_button()  # '공제신고서 내용 확인'에서 공제신고서 PDF다운로드 버튼 클릭
 
 # chromedriver.exe 종료
-kill_selenium_driver()
+kill_selenium_chrome_driver()

@@ -24,6 +24,7 @@ class HometaxYearEndTaxAdjustmentPage:
 
     def navigate_to_login_by_certificate_page(self):
         self.wait.until(ec.frame_to_be_available_and_switch_to_it(self.FRAME))
+        self.wait.until(ec.invisibility_of_element(self.LOADING_IMAGE))
         button = self.wait.until(ec.element_to_be_clickable(self.BUTTON_NAVIGATE_TO_LOGIN_BY_CERTIFICATE_PAGE))
         button.click()
 

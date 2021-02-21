@@ -16,7 +16,6 @@ corporate_registration_number = lines[3].replace('\n', '')
 total_income = lines[4].replace('\n', '')
 
 driver = None
-print('browser_name :', browser_name)
 if browser_name == 'chrome':
     driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
 elif browser_name == 'edge':
